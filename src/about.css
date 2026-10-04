@@ -1,0 +1,137 @@
+/* ===== About: photographic temple chamber, animated with light / fire / mist / dust ===== */
+.ab { position: relative; overflow: hidden; isolation: isolate; padding: 3.5rem 0 2rem; }
+.ab-stage { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(180deg, transparent, #000 14%, #000 86%, transparent); }
+.ab-bg { width: 100%; height: 100%; object-fit: cover; filter: brightness(.3) blur(4px) saturate(1.2); transform: scale(1.06); }
+
+.ab-wrap { position: relative; z-index: 1; display: flex; justify-content: center; }
+.ab-plate { position: relative; width: min(1180px, 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent), linear-gradient(180deg, transparent, #000 7%, #000 93%, transparent); -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent), linear-gradient(180deg, transparent, #000 7%, #000 93%, transparent); mask-composite: intersect; }
+.ab-img { display: block; width: 100%; height: auto; filter: brightness(.12) contrast(1.05); transition: filter 2.6s ease; }
+.ab.is-in .ab-img { filter: brightness(1) contrast(1.04); }
+.ab-plate > * { position: absolute; pointer-events: none; }
+.ab-plate > .ab-img { position: relative; }
+.ab-fall, .ab-vines { background-image: var(--plate); background-repeat: no-repeat; }
+
+/* sun shaft from the top-right gap — slow breathing */
+.ab-shaft { inset: 0; mix-blend-mode: screen; opacity: 0;
+  background: conic-gradient(from 168deg at 82% -6%, transparent 0deg, rgba(255,214,150,.2) 5deg, transparent 11deg, transparent 17deg, rgba(255,205,135,.15) 24deg, transparent 31deg, transparent 38deg, rgba(255,215,150,.17) 45deg, transparent 54deg, transparent 360deg);
+  -webkit-mask-image: radial-gradient(ellipse 60% 70% at 82% 0, #000, transparent 75%); mask-image: radial-gradient(ellipse 60% 70% at 82% 0, #000, transparent 75%); }
+.ab.is-in .ab-shaft { animation: ab-shaft 9s ease-in-out 1.2s infinite alternate; }
+@keyframes ab-shaft { from { opacity: .35; } to { opacity: 1; } }
+
+/* torch light on the parchment: warm, uneven, flickering */
+.ab-warm { left: 30%; top: 38%; width: 47%; height: 33%; mix-blend-mode: soft-light; opacity: 0;
+  background: radial-gradient(ellipse at 20% 85%, rgba(255,150,50,.9), transparent 60%), radial-gradient(ellipse at 90% 70%, rgba(255,140,40,.7), transparent 55%); }
+.ab.is-in .ab-warm { animation: ab-warm 2.3s ease-in-out 1.5s infinite alternate; }
+@keyframes ab-warm { 0% { opacity: .35; } 20% { opacity: .75; } 45% { opacity: .5; } 70% { opacity: .85; } 100% { opacity: .45; } }
+
+/* waterfall: the photo's own waterfall, re-sampled and rippled downward */
+.ab-fall { left: 73.5%; top: 14.5%; width: 8%; height: 26.5%; background-size: 1250% 377%; background-position: 79.9% 19.7%; opacity: 0; filter: url(#ab-ripple) brightness(1.25);
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 55%, transparent 100%); mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 55%, transparent 100%); mix-blend-mode: screen; }
+.ab.is-in .ab-fall { animation: ab-fall 3.2s ease-in-out 1.8s infinite alternate; }
+@keyframes ab-fall { from { opacity: .0; } to { opacity: .55; } }
+.ab-fmist { left: 71%; top: 36%; width: 17%; height: 14%; mix-blend-mode: screen; filter: blur(10px); opacity: 0;
+  background: radial-gradient(ellipse at 50% 50%, rgba(225,236,244,.5), rgba(200,220,235,.15) 55%, transparent 75%); }
+.ab.is-in .ab-fmist { animation: ab-mist 6s ease-in-out 1.6s infinite alternate; }
+@keyframes ab-mist { from { transform: scale(.92); opacity: .22; } to { transform: scale(1.14, 1.04) translateX(-5%); opacity: .55; } }
+
+/* hanging vines sway (photo region re-sampled and gently warped) */
+.ab-vines { left: 76.2%; top: 0; width: 23.8%; height: 13.3%; background-size: 420% 752%; background-position: 100% 0; filter: url(#ab-sway);
+  -webkit-mask-image: radial-gradient(ellipse 70% 80% at 60% 20%, #000 55%, transparent 100%); mask-image: radial-gradient(ellipse 70% 80% at 60% 20%, #000 55%, transparent 100%); opacity: 0; transition: opacity 2s ease 1.5s; }
+.ab.is-in .ab-vines { opacity: 1; }
+
+/* ground fog */
+.ab-fog { left: -25%; width: 150%; height: 24%; filter: blur(20px); mix-blend-mode: screen; opacity: 0;
+  background: radial-gradient(ellipse 20% 50% at 18% 50%, rgba(200,180,150,.55), transparent), radial-gradient(ellipse 22% 50% at 52% 50%, rgba(190,170,140,.45), transparent), radial-gradient(ellipse 20% 50% at 84% 50%, rgba(205,185,155,.5), transparent); }
+.ab-fog.f1 { bottom: 0; } .ab-fog.f2 { bottom: 13%; height: 18%; }
+.ab.is-in .ab-fog.f1 { animation: ab-drift 60s ease-in-out infinite alternate; opacity: .16; }
+.ab.is-in .ab-fog.f2 { animation: ab-drift 90s ease-in-out infinite alternate-reverse; opacity: .1; }
+@keyframes ab-drift { from { transform: translateX(-7%); } to { transform: translateX(7%); } }
+
+/* torches: only light is added — the flames themselves are in the photo */
+.ab-tc { width: 0; height: 0; }
+.ab-glow { position: absolute; display: block; width: 21vw; max-width: 250px; aspect-ratio: 1; left: 0; top: 0; translate: -50% -50%; border-radius: 50%; mix-blend-mode: screen; opacity: 0;
+  background: radial-gradient(circle, rgba(255,150,50,.5), rgba(255,100,15,.17) 40%, transparent 68%); }
+.ab-lick { position: absolute; display: block; left: 0; top: 0; width: 1.3vw; max-width: 15px; height: 3.1vw; max-height: 36px; translate: -50% -88%; transform-origin: 50% 100%; border-radius: 50% 50% 46% 46% / 72% 72% 28% 28%; mix-blend-mode: screen; opacity: 0; filter: blur(1.4px);
+  background: radial-gradient(ellipse at 50% 80%, rgba(255,226,150,.95), rgba(255,150,40,.7) 50%, transparent 100%); }
+.ab.is-in .ab-glow { animation: ab-glow var(--d) ease-in-out var(--o) infinite alternate, ab-on 1.6s ease 1.2s both; }
+.ab.is-in .ab-lick { animation: ab-lick calc(var(--d) * .8) ease-in-out var(--o) infinite alternate, ab-on 1.6s ease 1.4s both; }
+@keyframes ab-on { from { opacity: 0; } to { opacity: var(--op, 1); } }
+@keyframes ab-glow { 0% { scale: .94; filter: brightness(.8); } 25% { scale: 1.06; filter: brightness(1.15); } 50% { scale: .98; filter: brightness(.9); } 75% { scale: 1.09; filter: brightness(1.2); } 100% { scale: 1; filter: brightness(.85); } }
+@keyframes ab-lick { 0% { transform: scale(1, 1) skewX(-4deg); } 25% { transform: scale(.85, 1.2) skewX(5deg); } 50% { transform: scale(1.05, .9) skewX(-2deg); } 75% { transform: scale(.9, 1.25) skewX(4deg); } 100% { transform: scale(1, 1) skewX(-5deg); } }
+.ab-lick { --op: .8; } .ab-glow { --op: .75; }
+
+/* embers + dust canvas, and the global flicker of firelight */
+.ab-cv { inset: 0; width: 100%; height: 100%; }
+.ab-flick { inset: 0; background: #000; opacity: 0; }
+.ab.is-in .ab-flick { animation: ab-flick 4.7s steps(1, end) 2s infinite; }
+@keyframes ab-flick { 0% { opacity: .0; } 12% { opacity: .06; } 15% { opacity: .0; } 38% { opacity: .08; } 41% { opacity: .02; } 63% { opacity: .0; } 78% { opacity: .07; } 81% { opacity: .0; } }
+
+/* text: screen-reader only on desktop (the plate already shows it), a readable card on phones */
+.ab-read { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 900px) {
+  .ab { padding-top: 4.5rem; }
+  .ab-plate { width: 108%; margin-left: -4%; }
+  .ab-read { position: relative; z-index: 2; width: auto; height: auto; overflow: visible; clip: auto; white-space: normal; margin: 1rem 1rem 1.5rem; padding: 1.4rem 1.3rem; text-align: center; color: #ecd9ae;
+    background: linear-gradient(180deg, rgba(34,22,10,.84), rgba(20,13,6,.9)); border: 1px solid rgba(214,168,92,.35); border-radius: 6px; box-shadow: 0 14px 30px rgba(0,0,0,.6), inset 0 0 40px rgba(0,0,0,.4); }
+  .ab-read h2 { font-family: "Cinzel", serif; font-weight: 700; font-size: .95rem; letter-spacing: .1em; color: #f1c874; margin: 0 0 .8rem; }
+  .ab-read p { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 1.08rem; line-height: 1.65; margin: 0 0 .8rem; }
+  .ab-read .ab-read-q { font-style: italic; color: #f1c874; }
+  .ab-read ul { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ab *, .ab *::before, .ab *::after { animation: none !important; }
+  .ab-img { filter: none !important; transition: none !important; }
+  .ab-glow, .ab-lick, .ab-shaft, .ab-warm, .ab-vines { opacity: .5 !important; }
+}
+
+/* ===== About: richer, cinematic backdrop (graded temple, god-rays, mist, floating light) ===== */
+.ab-bg { filter: brightness(.55) saturate(1.3) contrast(1.1) blur(1.2px); transform: scale(1.14); translate: 0 var(--py, 0px); will-change: transform, translate;
+  animation: ab-kb 52s ease-in-out infinite alternate; }
+@keyframes ab-kb { from { transform: scale(1.12) translate3d(-1.4%, 0, 0); } to { transform: scale(1.22) translate3d(1.6%, -1%, 0); } }
+/* darkens behind the plate so it pops, vignettes the edges */
+.ab-stage::before { content: ""; position: absolute; inset: 0; z-index: 3;
+  background: radial-gradient(ellipse 46% 64% at 50% 52%, rgba(6,4,2,.8), rgba(6,4,2,.38) 62%, transparent 88%),
+              radial-gradient(ellipse 125% 100% at 50% 50%, transparent 52%, rgba(4,3,1,.8) 100%); }
+/* teal-and-amber grade: warm light from above, cool shadows below */
+.ab-stage::after { content: ""; position: absolute; inset: 0; z-index: 4; mix-blend-mode: soft-light;
+  background: linear-gradient(180deg, rgba(255,196,118,.42), rgba(255,128,48,.12) 48%, rgba(34,70,84,.42)); }
+.ab-rays { position: absolute; inset: -12% -10% 0; z-index: 1; mix-blend-mode: screen; opacity: 0; transform-origin: 56% 0; filter: blur(2px);
+  background: conic-gradient(from 171deg at 56% -8%, transparent 0 4deg, rgba(255,216,152,.3) 7deg, transparent 13deg, transparent 19deg, rgba(255,206,136,.22) 24deg, transparent 31deg, transparent 36deg, rgba(255,224,162,.26) 41deg, transparent 49deg, transparent 360deg);
+  -webkit-mask-image: radial-gradient(ellipse 72% 88% at 56% 0, #000, transparent 82%); mask-image: radial-gradient(ellipse 72% 88% at 56% 0, #000, transparent 82%); }
+.ab.is-in .ab-rays { animation: ab-rays-in 2.4s ease .6s both, ab-rays-sway 15s ease-in-out .6s infinite alternate; }
+@keyframes ab-rays-in { from { opacity: 0; } to { opacity: .95; } }
+@keyframes ab-rays-sway { from { transform: rotate(-2.4deg) scaleY(1); } to { transform: rotate(2.4deg) scaleY(1.07); } }
+.ab-mist { position: absolute; left: -30%; width: 160%; z-index: 2; mix-blend-mode: screen; filter: blur(26px); opacity: 0; height: 30%; bottom: 6%;
+  background: radial-gradient(ellipse 18% 50% at 14% 50%, rgba(214,190,150,.5), transparent), radial-gradient(ellipse 22% 50% at 46% 50%, rgba(200,180,146,.42), transparent), radial-gradient(ellipse 18% 50% at 80% 50%, rgba(218,194,156,.46), transparent); }
+.ab.is-in .ab-mist { animation: ab-mist-in 3s ease 1s forwards, ab-drift 75s ease-in-out infinite alternate; }
+@keyframes ab-mist-in { to { opacity: .22; } }
+.ab-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 34%; z-index: 2; mix-blend-mode: screen; opacity: .0;
+  background: radial-gradient(ellipse 62% 100% at 50% 100%, rgba(255,142,52,.34), transparent 72%); }
+.ab.is-in .ab-floor { animation: ab-floor 5.5s ease-in-out 1.2s infinite alternate; }
+@keyframes ab-floor { from { opacity: .45; } to { opacity: .95; } }
+/* floating dust, fireflies and bokeh across the whole chamber */
+.ab-amb { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .ab-bg { animation: none !important; } .ab-rays { opacity: .6 !important; } .ab-floor { opacity: .6 !important; } .ab-amb { display: none; } }
+
+/* ===== About: crisp, readable scroll text laid over the parchment (the photo's baked-in text is too small) ===== */
+.ab-plate { container-type: inline-size; }
+.ab-scroll { left: 31.2%; top: 39.6%; width: 44%; height: 29.2%; display: flex; align-items: center; justify-content: center;
+  filter: brightness(.12); transition: filter 2.6s ease; }
+.ab.is-in .ab-scroll { filter: brightness(1); }
+/* a blurred sample of the real parchment hides the small baked text while keeping the exact paper tone and stains */
+.ab-scroll::before { content: ""; position: absolute; inset: 0; filter: blur(13px);
+  background-image: linear-gradient(rgba(226,201,152,.42), rgba(206,174,118,.42)), var(--plate);
+  background-repeat: no-repeat; background-size: auto, 227.3% 342.5%; background-position: 0 0, 55.7% 55.9%;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(180deg, transparent, #000 9%, #000 91%, transparent); -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(180deg, transparent, #000 9%, #000 91%, transparent); mask-composite: intersect; }
+.ab-sc-in { position: relative; padding: 0 5.5%; text-align: center; color: #2a1707; font-family: "Cormorant Garamond", Georgia, serif; text-shadow: 0 1px 0 rgba(255,244,214,.35); }
+.ab-sc-h { font-family: "Cinzel", serif; font-weight: 700; font-size: clamp(9px, 1.3cqw, 16px); letter-spacing: .14em; color: #3b210c; margin-bottom: .95em; }
+.ab-sc-in p { margin: 0; font-weight: 700; font-size: clamp(11px, 1.46cqw, 19px); line-height: 1.4; }
+.ab-sc-div { width: 62%; height: 1px; margin: .95em auto; background: linear-gradient(90deg, transparent, rgba(70,40,12,.6), transparent); position: relative; }
+.ab-sc-div::after { content: ""; position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; background: #4a2a0e; transform: translate(-50%, -50%) rotate(45deg); }
+.ab-sc-in .ab-sc-q { font-style: italic; color: #55290a; font-size: clamp(11px, 1.52cqw, 20px); }
+@media (max-width: 900px) { .ab-scroll { display: none; } }
+@media (prefers-reduced-motion: reduce) { .ab-scroll { filter: none !important; transition: none !important; } }
